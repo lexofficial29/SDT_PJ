@@ -1,0 +1,42 @@
+@startuml
+title Sequence Diagram: Employer Posts a Job
+
+actor Employer as employer
+participant "UserFactory" as factory
+participant "DatabaseConnection" as db
+participant "Job" as job
+
+employer -> factory: createUser("employer", userDetails)
+activate factory
+factory -> employer: new Employer()
+factory --> employer: employerInstance
+deactivate factory
+
+note right of factory
+  **Factory Method Pattern**
+  Creates Employer instance
+  based on user type
+end note
+
+employer -> job: new Job(title, description, payRate, category)
+activate job
+job --> employer: jobInstance
+deactivate job
+
+employer -> db: getInstance()
+activate db
+db --> employer: dbInstance
+deactivate db
+
+employer -> db: getConnection()
+activate db
+db --> employer: connection
+deactivate db
+
+employer -> db: saveJob(jobInstance)
+activate db
+db --> employer: saveSuccess
+deactivate db
+
+employer --> employer: jobPostedSuccessfully()
+@enduml

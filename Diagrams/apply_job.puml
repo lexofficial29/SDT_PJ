@@ -1,0 +1,46 @@
+@startuml
+title Sequence Diagram: Student Applies for a Job
+
+actor Student as student
+participant "JobApplicationFacade" as facade
+participant "DatabaseConnection" as db
+participant "Application" as app
+participant "Job" as job
+
+student -> facade: applyForJob(studentId, jobId)
+activate facade
+
+facade -> db: getInstance()
+activate db
+db --> facade: dbInstance
+deactivate db
+
+facade -> db: getConnection()
+activate db
+db --> facade: connection
+deactivate db
+
+facade -> job: getJobDetails(jobId)
+activate job
+job --> facade: jobDetails
+deactivate job
+
+facade -> app: new Application(studentId, jobId)
+activate app
+app --> facade: applicationObject
+deactivate app
+
+facade -> db: saveApplication(applicationObject)
+activate db
+db --> facade: saveSuccess
+deactivate db
+
+facade -> student: applicationSubmitted(true)
+deactivate facade
+
+note right of facade
+  **Facade Pattern in action**
+  Simplifies the complex
+  application process
+end note
+@enduml
