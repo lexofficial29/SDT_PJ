@@ -50,7 +50,7 @@ jobs:
         run: sleep 70
 
       - name: Test apply
-        run: curl -X POST http://localhost:8083/api/applications -H "Content-Type: application/json" -d '{"studentId":1,"jobId":1}'
+        run: "curl -X POST http://localhost:8083/api/applications -H \"Content-Type: application/json\" -d '{\"studentId\":1,\"jobId\":1}'"
 
       - name: Check async log
         run: |
