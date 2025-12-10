@@ -55,6 +55,27 @@ jobs:
       - name: Wait
         run: sleep 70
 
+      - name: Register Student (ID=1)
+        run: |
+          curl -X POST http://localhost:8081/api/auth/register \
+            -H "Content-Type: application/json" \
+            -d '{"email":"student@test.com","password":"pass","role":"STUDENT","name":"Test Student"}'
+
+      - name: Register Employer (ID=2)
+        run: |
+          curl -X POST http://localhost:8081/api/auth/register \
+            -H "Content-Type: application/json" \
+            -d '{"email":"employer@test.com","password":"pass","role":"EMPLOYER","name":"Test Corp"}'
+
+      - name: Create Job (ID=1) by Employer
+        run: |
+          curl -X POST http://localhost:8082/api/jobs \
+            -H "Content-Type: application/json" \
+            -d '{"title":"Java Developer","description":"Full-time","category":"IT","payRate":"5000","employerId":2}'
+      
+      - name: Wait
+        run: sleep 70
+
       - name: Test apply
         run: "curl -X POST http://localhost:8083/api/applications -H \"Content-Type: application/json\" -d '{\"studentId\":1,\"jobId\":1}'"
 
