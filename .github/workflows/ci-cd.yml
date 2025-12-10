@@ -83,6 +83,3 @@ jobs:
         run: |
           sleep 5
           docker logs hiremenow-job | grep "ASYNC EVENT RECEIVED" || (echo "FAILED" && exit 1)
-
-      - name: DONE
-        run: echo "Victory!
