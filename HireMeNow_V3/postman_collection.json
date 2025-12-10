@@ -1,0 +1,351 @@
+{
+  "info": {
+    "name": "HireMeNow - Full Microservices Collection",
+    "_postman_id": "hiremenow-full-collection",
+    "description": "Complete test suite for Auth, Job and Application services (with Strategy Pattern filtering)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "AUTH SERVICE",
+      "item": [
+        {
+          "name": "Register Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alexandra\",\n  \"email\": \"alex@example.com\",\n  \"role\": \"STUDENT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/auth/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Employer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"TechCorp\",\n  \"email\": \"hr@techcorp.com\",\n  \"role\": \"EMPLOYER\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/auth/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"System Admin\",\n  \"email\": \"admin@example.com\",\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/auth/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register — Duplicate Email (Error Test)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alexandra 2\",\n  \"email\": \"alex@example.com\",\n  \"role\": \"STUDENT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/auth/register",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "List all users",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8081/api/auth/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "auth", "users"]
+            }
+          }
+        },
+        {
+          "name": "Get user by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8081/api/auth/users/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "auth", "users", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "JOB SERVICE",
+      "item": [
+        {
+          "name": "Create job",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Java Developer\",\n  \"description\": \"Full-time remote\",\n  \"payRate\": 120000,\n  \"category\": \"IT\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/jobs",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "jobs"]
+            }
+          }
+        },
+        {
+          "name": "List all jobs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8082/api/jobs",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "jobs"]
+            }
+          }
+        },
+        {
+          "name": "Filter by category = IT",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8082/api/jobs?category=IT",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "jobs"],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "IT"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter by minPay = 80000",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8082/api/jobs?minPay=80000",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "jobs"],
+              "query": [
+                {
+                  "key": "minPay",
+                  "value": "80000"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get job by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8082/api/jobs/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "jobs", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get non-existing job (Error Test)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8082/api/jobs/9999",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["api", "jobs", "9999"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "APPLICATION SERVICE",
+      "item": [
+        {
+          "name": "Apply to job (valid)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": 1,\n  \"jobId\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/applications",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "applications"]
+            }
+          }
+        },
+        {
+          "name": "Apply with non-existent student (Error Test)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": 999,\n  \"jobId\": 1\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/applications",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "applications"]
+            }
+          }
+        },
+        {
+          "name": "Apply to non-existent job (Error Test)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": 1,\n  \"jobId\": 999\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/applications",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "applications"]
+            }
+          }
+        },
+        {
+          "name": "List all applications",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8083/api/applications",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "applications"]
+            }
+          }
+        },
+        {
+          "name": "Get applications by student",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8083/api/applications/by-student/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "applications", "by-student", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get applications by job",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8083/api/applications/by-job/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["api", "applications", "by-job", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

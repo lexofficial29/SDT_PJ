@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:10.11
+    container_name: hiremenow-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: hiremenow
+      MYSQL_USER: hmuser
+      MYSQL_PASSWORD: hmpass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-u", "root", "--password=rootpass"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: hiremenow-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  auth-service:
+    build: ./auth_service
+    container_name: hiremenow-auth
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/hiremenow
+      SPRING_DATASOURCE_USERNAME: hmuser
+      SPRING_DATASOURCE_PASSWORD: hmpass
+      SERVER_PORT: 8081
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+  job-service:
+    build: ./job_service
+    container_name: hiremenow-job
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/hiremenow
+      SPRING_DATASOURCE_USERNAME: hmuser
+      SPRING_DATASOURCE_PASSWORD: hmpass
+      SERVER_PORT: 8082
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  application-service:
+    build: ./application_service
+    container_name: hiremenow-application
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/hiremenow
+      SPRING_DATASOURCE_USERNAME: hmuser
+      SPRING_DATASOURCE_PASSWORD: hmpass
+      AUTH_SERVICE_URL: http://hiremenow-auth:8081
+      JOB_SERVICE_URL: http://hiremenow-job:8082
+      SERVER_PORT: 8083
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+      job-service:
+        condition: service_started
+
+volumes:
+  mariadb-data:
