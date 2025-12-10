@@ -50,7 +50,7 @@ jobs:
           mvn -B -f application_service/pom.xml -DskipTests package
 
       - name: Start system
-        run: docker-compose up -d
+        run: cd HireMeNow_V3 && docker-compose up -d
 
       - name: Wait
         run: sleep 70
