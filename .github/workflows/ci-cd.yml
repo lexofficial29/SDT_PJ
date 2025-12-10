@@ -5,9 +5,9 @@ name: CI/CD Test
 # Controls when the workflow will run
 on:
   push:
-    branches: [ "milestone5" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "milestone5" ]
+    branches: [ "master" ]
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -39,6 +39,7 @@ jobs:
 
       - name: Build
         run: |
+          cd HireMeNow_V3
           mvn -B -f auth_service/pom.xml -DskipTests package
           mvn -B -f job_service/pom.xml -DskipTests package
           mvn -B -f application_service/pom.xml -DskipTests package
@@ -58,4 +59,4 @@ jobs:
           docker logs hiremenow-job | grep "ASYNC EVENT RECEIVED" || (echo "FAILED" && exit 1)
 
       - name: DONE
-        run: echo "GRADE 10 ACHIEVED"
+        run: echo "Victory!
